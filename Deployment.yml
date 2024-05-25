@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+  labels:
+    app: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: nginx:1.21.6
+        ports:
+        - containerPort: 80
+
+--------------------------------------------------------------------
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-complex-deployment
+  labels:
+    app: my-complex-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-complex-app
+  template:
+    metadata:
+      labels:
+        app: my-complex-app
+    spec:
+      containers:
+      - name: my-complex-container
+        image: nginx:1.21.6
+        ports:
+        - containerPort: 80
+        env:
+        - name: ENV_VAR_NAME
+          value: "value"
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: my-volume
+      volumes:
+      - name: my-volume
+        hostPath:
+          path: /data
